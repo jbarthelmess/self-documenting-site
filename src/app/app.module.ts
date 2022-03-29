@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './blog/homepage/homepage.component';
 import { ToolbarBufferComponent } from './util/toolbar-buffer/toolbar-buffer.component';
+import { PostComponent } from './blog/post/post.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    ToolbarBufferComponent
+    ToolbarBufferComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,

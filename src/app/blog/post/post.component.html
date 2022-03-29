@@ -1,0 +1,23 @@
+<!-- This will be a post displayed in full on it's own page. I'll make 
+a separate component for displaying post previews on the homepage. The
+content of the page will be stored as an ordered array of content pieces.
+This way I can expand the types of blog posts I can make, to make the 
+blog more engaging. -->
+
+<!-- To start, I'll just have a "text" content type, so that I can focus
+on the layout. We'll have an h1 for the title of the post, paragraphs
+for each piece of text, and then links at the bottom to go the next 
+post or the previous post. Maybe we can also add a link back to the 
+homepage in the toolbar at the top. -->
+
+<app-toolbar-buffer></app-toolbar-buffer>
+
+<h1>{{post.title}}</h1>
+
+<p *ngFor="let item of post.content;">{{item.text}}</p>
+
+<!-- I'll probably want to make this footer it's own component, but
+it can go here for now. -->
+<div class="footer">
+    
+</div>
