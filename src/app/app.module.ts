@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { HomepageComponent } from './blog/homepage/homepage.component';
 import { ToolbarBufferComponent } from './util/toolbar-buffer/toolbar-buffer.component';
 import { PostComponent } from './blog/post/post.component';
+import { GuardTypePipe } from './util/pipe/guard-type.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     ToolbarBufferComponent,
-    PostComponent
+    PostComponent,
+    GuardTypePipe
   ],
   imports: [
     BrowserModule,
