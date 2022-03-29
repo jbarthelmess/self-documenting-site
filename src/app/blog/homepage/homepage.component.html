@@ -12,7 +12,7 @@
     are held inside of this one.
 </h3>
 
-<!-- Added temporary blog posts here -->
-<a href="/home/post">Blog Post 1</a>
-<a href="/home/post">Blog Post 2</a>
-<a href="/home/post">Blog Post 3</a>
+<!-- This is where the list of blog posts will go, listed in reverse chronological
+order. These PostPreviewComponents will allow the user to click on them and see 
+relevant post that it refers too. -->
+<app-post-preview *ngFor="let post of postPreviews;" [postPreview]="post" (postId)="navigateOnClick($event)"></app-post-preview>
