@@ -8,6 +8,7 @@ import { ToolbarBufferComponent } from './util/toolbar-buffer/toolbar-buffer.com
 import { PostComponent } from './blog/post/post.component';
 import { GuardTypePipe } from './util/pipe/guard-type.pipe';
 import { PostPreviewComponent } from './blog/post-preview/post-preview.component';
+import { CreatePostComponent } from './blog/create-post/create-post.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PostPreviewComponent } from './blog/post-preview/post-preview.component
     ToolbarBufferComponent,
     PostComponent,
     GuardTypePipe,
-    PostPreviewComponent
+    PostPreviewComponent,
+    CreatePostComponent
   ],
   imports: [
     BrowserModule,

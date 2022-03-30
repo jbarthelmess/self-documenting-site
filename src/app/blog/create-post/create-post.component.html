@@ -1,0 +1,17 @@
+<app-toolbar-buffer></app-toolbar-buffer>
+<h1>Create New Post</h1>
+<div class="post-creation-container">
+    <div class="add-content-button">
+        <button (click)="addText()" class="add-button">Add Text</button>
+        <button (click)="addCode()" class="add-button">Add Code</button>
+        <button (click)="addImage()" class="add-button">Add Image</button>
+    </div>
+    <div class="fill-content-section">
+        <div *ngFor="let cont of content;">
+            <textarea *ngIf="cont | guardType : isText as t" class="text-content"></textarea>
+            <textarea *ngIf="cont | guardType : isCode as c" class="code-content"></textarea>
+            <input *ngIf="cont | guardType : isImage as i" />
+        </div>
+    </div>
+    <button (click)="post()">Post</button>
+</div>
