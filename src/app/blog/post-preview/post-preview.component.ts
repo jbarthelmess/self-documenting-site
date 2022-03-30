@@ -8,10 +8,10 @@ import { PostPreview } from '../model/post-preview.model';
 })
 export class PostPreviewComponent implements OnInit {
   @Input()
-  postPreview: PostPreview = new PostPreview(0, "Filler Title", new Date());
+  postPreview: PostPreview = new PostPreview("00000", "Filler Title", new Date(), []);
 
   @Output()
-  postId: EventEmitter<number> = new EventEmitter();
+  postId: EventEmitter<string> = new EventEmitter();
 
   constructor() { }
 

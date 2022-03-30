@@ -1,11 +1,12 @@
 export class PostPreview {
-    id: number;
+    id: string;
     title: string;
     createdDate: Date;
-
-    constructor(id: number, title: string, createdDate: Date) {
+    contentIds: string[]
+    constructor(id: string, title: string, createdDate: Date, contentIds: string[]) {
         this.id = id;
         this.title = title;
         this.createdDate = createdDate;
+        this.contentIds = contentIds;
     }
 }

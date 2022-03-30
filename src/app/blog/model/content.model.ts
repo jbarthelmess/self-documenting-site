@@ -5,21 +5,21 @@ import { TypeGuard } from "src/app/util/pipe/guard-type.pipe";
 import { ContentType } from "./content-type";
 
 export interface Code {
-    id: number;
+    id: string;
     order: number;
     type: ContentType.Code;
     code: string;
 }
 
 export interface Text {
-    id: number;
+    id: string;
     order: number;
     type: ContentType.Text;
     text: string;
 }
 
 export interface Image {
-    id: number;
+    id: string;
     order: number;
     type: ContentType.Image;
     url: string;
