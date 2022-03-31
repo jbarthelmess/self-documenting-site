@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { child, Database, get, getDatabase, onValue, push, ref, set } from "firebase/database";
 import { BehaviorSubject } from 'rxjs';
-import { Content, isCode, isImage, isText } from '../blog/model/content.model';
+import { Content, isCode, isHeading, isImage, isLink, isText } from '../blog/model/content.model';
 import { PostPreview } from '../blog/model/post-preview.model';
 import { Post } from '../blog/model/post.model';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -69,13 +69,13 @@ export class FirebaseService {
         type: content.type,
         code: content.code
       };
-    } else if(isText(content)) {
+    } else if(isText(content) || isHeading(content)) {
       clone = {
         order: content.order,
         type: content.type,
         text: content.text
       }
-    } else if(isImage(content)) {
+    } else if(isImage(content) || isLink(content)) {
       clone = {
         order: content.order,
         type: content.type,

@@ -4,12 +4,6 @@ content of the page will be stored as an ordered array of content pieces.
 This way I can expand the types of blog posts I can make, to make the 
 blog more engaging. -->
 
-<!-- To start, I'll just have a "text" content type, so that I can focus
-on the layout. We'll have an h1 for the title of the post, paragraphs
-for each piece of text, and then links at the bottom to go the next 
-post or the previous post. Maybe we can also add a link back to the 
-homepage in the toolbar at the top. -->
-
 <app-toolbar-buffer></app-toolbar-buffer>
 
 <h1>{{post.title}}</h1>
@@ -17,8 +11,8 @@ homepage in the toolbar at the top. -->
 <div *ngFor="let item of post.content;">
     <p *ngIf="item | guardType : isText as text">{{text.text}}</p>
     <img *ngIf="item | guardType : isImage as image" [src]="image.url" />
-    <code *ngIf="item | guardType : isCode as code">{{code.code}}</code>
-    <a *ngIf="item | guardType : isLink as link">{{link.url}}</a>
+    <pre *ngIf="item | guardType : isCode as code"><code>{{code.code}}</code></pre>
+    <a *ngIf="item | guardType : isLink as link" [href]="link.url">{{link.url}}</a>
     <h3 *ngIf="item | guardType : isHeading as heading">{{heading.text}}</h3>
 </div>
 
