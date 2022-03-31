@@ -15,9 +15,11 @@ homepage in the toolbar at the top. -->
 <h1>{{post.title}}</h1>
 
 <div *ngFor="let item of post.content;">
-    <p *ngIf="item | guardType: isText as text">{{text.text}}</p>
-    <img *ngIf="item | guardType: isImage as image" [src]="image.url" />
-    <code *ngIf="item | guardType: isCode as code">{{code.code}}</code>
+    <p *ngIf="item | guardType : isText as text">{{text.text}}</p>
+    <img *ngIf="item | guardType : isImage as image" [src]="image.url" />
+    <code *ngIf="item | guardType : isCode as code">{{code.code}}</code>
+    <a *ngIf="item | guardType : isLink as link">{{link.url}}</a>
+    <h3 *ngIf="item | guardType : isHeading as heading">{{heading.text}}</h3>
 </div>
 
 <!-- I'll probably want to make this footer it's own component, but

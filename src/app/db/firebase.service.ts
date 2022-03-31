@@ -27,7 +27,7 @@ const firebaseConfig = {
 export class FirebaseService {
   app: FirebaseApp;
   database: Database;
-  posts: PostPreview[] = [];
+  posts: Map<string, PostPreview> = new Map();
   postMap: Map<string, Post> = new Map();
   postsLoaded: BehaviorSubject<PostPreview[]> = new BehaviorSubject<PostPreview[]>([]);
 
@@ -90,30 +90,29 @@ export class FirebaseService {
     const dbRef = ref(this.database, 'posts');
     onValue(dbRef, (snapshot) => {
       let data = snapshot.val();
-      this.posts = [];
-      console.log('calling onValue');
-      console.log(data);
+      this.posts.clear();
       for (let post in data) {
-        console.log(post);
         let contentIds = [];
         for (let id in data[post].content) {
           contentIds.push(id);
         }
-        console.log(contentIds);
-        this.posts.push({
+        this.posts.set(post, {
           id: post,
           title: data[post].title,
           createdDate: new Date(data[post].createdDate),
           contentIds
         });
       }
-      console.log(this.posts);
-      this.postsLoaded.next(this.posts);
+      this.postsLoaded.next([...this.posts.values()]);
     });
   }
 
   getPosts(): PostPreview[] {
-    return this.posts;
+    return [...this.posts.values()];
+  }
+
+  getPost(id: string): PostPreview | undefined {
+    return this.posts.get(id);
   }
 
   getPostContent(postPreview: PostPreview): Post {

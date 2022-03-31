@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/db/firebase.service';
-import { ContentType } from '../model/content-type';
-import { Content, isCode, isImage, isText } from '../model/content.model';
+import { Content, ContentType, isCode, isHeading, isImage, isLink, isText } from '../model/content.model';
 import { Post } from '../model/post.model';
 
 @Component({
@@ -17,6 +16,8 @@ export class CreatePostComponent implements OnInit {
   isText = isText;
   isCode = isCode;
   isImage = isImage;
+  isHeading = isHeading;
+  isLink = isLink;
 
   constructor(private firebaseService: FirebaseService, private router: Router) { }
 
@@ -51,6 +52,26 @@ export class CreatePostComponent implements OnInit {
       type: ContentType.Code,
       code:''
     });
+  }
+
+  addLink() {
+    console.log("Adding Link");
+    this.content.push({
+      id: '',
+      order: this.content.length,
+      type: ContentType.Link,
+      url: ''
+    });
+  }
+
+  addHeading() {
+    console.log("Adding Heading");
+    this.content.push({
+      id: '',
+      order: this.content.length,
+      type: ContentType.Heading,
+      text: ''
+    })
   }
 
   post() {

@@ -5,6 +5,8 @@
         <button (click)="addText()" class="add-button">Add Text</button>
         <button (click)="addCode()" class="add-button">Add Code</button>
         <button (click)="addImage()" class="add-button">Add Image</button>
+        <button (click)="addHeading()" class="add-button">Add Heading</button>
+        <button (click)="addLink()" class="add-button">Add Link</button>
     </div>
     <div class="fill-content-section">
         <label for="title">Title</label>
@@ -13,6 +15,8 @@
             <textarea *ngIf="cont | guardType : isText as t" class="text-content" [(ngModel)]="t.text"></textarea>
             <textarea *ngIf="cont | guardType : isCode as c" class="code-content" [(ngModel)]="c.code"></textarea>
             <input *ngIf="cont | guardType : isImage as i" [(ngModel)]="i.url" />
+            <input *ngIf="cont | guardType : isLink as l" [(ngModel)]="l.url" />
+            <input *ngIf="cont | guardType : isHeading as h" [(ngModel)]="h.text" />
         </div>
     </div>
 </div>
