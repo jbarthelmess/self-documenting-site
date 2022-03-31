@@ -9,6 +9,7 @@ import { PostComponent } from './blog/post/post.component';
 import { GuardTypePipe } from './util/pipe/guard-type.pipe';
 import { PostPreviewComponent } from './blog/post-preview/post-preview.component';
 import { CreatePostComponent } from './blog/create-post/create-post.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CreatePostComponent } from './blog/create-post/create-post.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

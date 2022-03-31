@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FirebaseService } from 'src/app/db/firebase.service';
 import { ContentType } from '../model/content-type';
 import { Content, isCode, isImage, isText } from '../model/content.model';
+import { Post } from '../model/post.model';
 
 @Component({
   selector: 'app-create-post',
@@ -9,12 +12,13 @@ import { Content, isCode, isImage, isText } from '../model/content.model';
 })
 export class CreatePostComponent implements OnInit {
   content: Content[] = [];
+  title: string = '';
 
   isText = isText;
   isCode = isCode;
   isImage = isImage;
 
-  constructor() { }
+  constructor(private firebaseService: FirebaseService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -51,6 +55,14 @@ export class CreatePostComponent implements OnInit {
 
   post() {
     console.log(this.content);
+    const post = new Post(
+      '',
+      this.content,
+      this.title,
+      new Date()
+    );
+    this.firebaseService.createPost(post);
+    this.router.navigateByUrl('/home');
   }
 
 }

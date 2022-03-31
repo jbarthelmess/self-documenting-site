@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 // Import the functions you need from the SDKs you need
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { child, Database, get, getDatabase, onValue, push, ref, set } from "firebase/database";
+import { BehaviorSubject } from 'rxjs';
 import { Content, isCode, isImage, isText } from '../blog/model/content.model';
 import { PostPreview } from '../blog/model/post-preview.model';
 import { Post } from '../blog/model/post.model';
@@ -28,11 +29,12 @@ export class FirebaseService {
   database: Database;
   posts: PostPreview[] = [];
   postMap: Map<string, Post> = new Map();
+  postsLoaded: BehaviorSubject<PostPreview[]> = new BehaviorSubject<PostPreview[]>([]);
 
   constructor() {
     this.app = initializeApp(firebaseConfig);
     this.database = getDatabase(this.app);
-    this.getPosts();
+    this.retrievePosts();
   }
 
   createPost(post: Post): string {
@@ -49,7 +51,7 @@ export class FirebaseService {
     // add post to database
     post.id = newPostRef.key === null ? '0000': newPostRef.key;
     set(newPostRef, {
-      createdDate: post.createdDate,
+      createdDate: post.createdDate.getTime(),
       title: post.title,
       content: contentIds
     });
@@ -84,25 +86,33 @@ export class FirebaseService {
     return content.id;
   }
 
-  getPosts(): PostPreview[] {
+  retrievePosts() {
     const dbRef = ref(this.database, 'posts');
     onValue(dbRef, (snapshot) => {
       let data = snapshot.val();
       this.posts = [];
+      console.log('calling onValue');
+      console.log(data);
       for (let post in data) {
+        console.log(post);
         let contentIds = [];
-        for (let id in data[post].contentIds) {
+        for (let id in data[post].content) {
           contentIds.push(id);
         }
+        console.log(contentIds);
         this.posts.push({
           id: post,
           title: data[post].title,
-          createdDate: data[post].createdDate,
+          createdDate: new Date(data[post].createdDate),
           contentIds
         });
       }
+      console.log(this.posts);
+      this.postsLoaded.next(this.posts);
     });
-    console.log(this.posts);
+  }
+
+  getPosts(): PostPreview[] {
     return this.posts;
   }
 
