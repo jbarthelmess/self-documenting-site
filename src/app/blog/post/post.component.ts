@@ -63,7 +63,8 @@ export class PostComponent implements OnInit {
           text: "Nec sagittis aliquam malesuada bibendum arcu vitae. Purus non enim praesent elementum. Tellus in metus vulputate eu scelerisque. Semper viverra nam libero justo laoreet. Duis ut diam quam nulla. Volutpat lacus laoreet non curabitur gravida. Consequat ac felis donec et odio pellentesque diam volutpat commodo. Tempor orci dapibus ultrices in iaculis nunc sed augue lacus. Mattis nunc sed blandit libero volutpat sed cras ornare arcu. Nunc aliquet bibendum enim facilisis gravida neque convallis a cras. Ullamcorper eget nulla facilisi etiam dignissim. Condimentum lacinia quis vel eros donec ac odio.",
         } as Text,
       ],
-      "Title of the Blog Post"
+      "Title of the Blog Post",
+      new Date()
     );
   }
 
