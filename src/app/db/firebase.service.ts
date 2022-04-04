@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 // Import the functions you need from the SDKs you need
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { child, Database, get, getDatabase, onValue, push, ref, set } from "firebase/database";
+import { getAuth, Auth, User, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 import { Content, isCode, isHeading, isImage, isLink, isText } from '../blog/model/content.model';
 import { PostPreview } from '../blog/model/post-preview.model';
@@ -30,10 +31,14 @@ export class FirebaseService {
   posts: Map<string, PostPreview> = new Map();
   postMap: Map<string, Post> = new Map();
   postsLoaded: BehaviorSubject<PostPreview[]> = new BehaviorSubject<PostPreview[]>([]);
+  auth: Auth;
+  user: User | null = null;
+  googleAccessToken = '';
 
   constructor() {
     this.app = initializeApp(firebaseConfig);
     this.database = getDatabase(this.app);
+    this.auth = getAuth();
     this.retrievePosts();
   }
 
@@ -132,5 +137,29 @@ export class FirebaseService {
       createdDate: postPreview.createdDate, 
       content
     };
+  }
+
+  // ------------------- AUTHENTICATION ----------------------------
+  /* We're going to use google sign authentication to authenticate, and 
+  to start, we're just going to use it check whether it is me, or someone
+  else trying to access the create-post page and redirect to the homepage if
+  they are not Josh Barthelmess. After that, we'll add rules to the actual 
+  database to protect that as well. */
+
+  signInWithGoogle() {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(this.auth, provider).then(result => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      this.user = result.user;
+      if (credential) {
+        if (credential.accessToken) {
+          this.googleAccessToken = credential.accessToken;
+        }
+      }
+    });
+  }
+
+  getUser(): User | null {
+    return this.user;
   }
 }

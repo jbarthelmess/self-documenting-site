@@ -32,4 +32,8 @@ export class HomepageComponent implements OnInit, OnDestroy {
     // eventually this will use the id release of the post clicked on to navigate to the correct post
     this.router.navigateByUrl(`/home/post?postId=${id}`);
   }
+
+  signInWithGoogle() {
+    this.firebaseService.signInWithGoogle();
+  }
 }
