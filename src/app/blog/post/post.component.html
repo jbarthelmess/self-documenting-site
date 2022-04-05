@@ -5,19 +5,27 @@ This way I can expand the types of blog posts I can make, to make the
 blog more engaging. -->
 
 <app-toolbar-buffer></app-toolbar-buffer>
+<div class="container">
+    <div class="content-container">
+        <h1>{{post.title}}</h1>
 
-<h1>{{post.title}}</h1>
-
-<div *ngFor="let item of post.content;">
-    <p *ngIf="item | guardType : isText as text">{{text.text}}</p>
-    <img *ngIf="item | guardType : isImage as image" [src]="image.url" />
-    <pre *ngIf="item | guardType : isCode as code"><code>{{code.code}}</code></pre>
-    <a *ngIf="item | guardType : isLink as link" [href]="link.url">{{link.url}}</a>
-    <h3 *ngIf="item | guardType : isHeading as heading">{{heading.text}}</h3>
+        <div *ngFor="let item of post.content;">
+            <p *ngIf="item | guardType : isText as text">{{text.text}}</p>
+            <img *ngIf="item | guardType : isImage as image" [src]="image.url" />
+            <pre *ngIf="item | guardType : isCode as code"><code>{{code.code}}</code></pre>
+            <a *ngIf="item | guardType : isLink as link" [href]="link.url">{{link.url}}</a>
+            <h3 *ngIf="item | guardType : isHeading as heading">{{heading.text}}</h3>
+        </div>
+    </div>
 </div>
+
+
+
 
 <!-- I'll probably want to make this footer it's own component, but
 it can go here for now. -->
 <div class="footer">
-    
+    <a *ngIf="previousPreview" routerLink="/home/post" [queryParams]="{postId: previousPreview.id}" class="previous">{{previousPreview.title}}</a>
+    <div class="spacer" *ngIf="previousPreview || nextPreview"></div>
+    <a *ngIf="nextPreview" routerLink="/home/post" [queryParams]="{postId: nextPreview.id}" class="next">{{nextPreview.title}}</a>
 </div>

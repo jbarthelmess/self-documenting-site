@@ -116,6 +116,30 @@ export class FirebaseService {
     return [...this.posts.values()];
   }
 
+  getNeighboringPosts(viewPost: PostPreview): PostPreview[] {
+    let previous = null;
+    let next = null;
+    const ret = [];
+    for(let post of this.posts.values()) {
+      if(post.createdDate < viewPost.createdDate) { // previous
+        if(!previous || (previous && previous.createdDate < post.createdDate)) {
+          previous = post;
+        }
+      } else if(post.createdDate > viewPost.createdDate) { // next
+        if(!next || (next && next.createdDate > post.createdDate)) {
+          next = post;
+        }
+      }
+    }
+    if(previous) {
+      ret.push(previous);
+    }
+    if(next) {
+      ret.push(next);
+    }
+    return ret;
+  }
+
   getPost(id: string): PostPreview | undefined {
     return this.posts.get(id);
   }
