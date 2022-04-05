@@ -40,3 +40,18 @@
 .code-content {
     font-size: 12pt;
 }
+
+.content-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-type-list {
+    justify-self: center;
+    text-align: center;
+}
+
+.remove-button {
+    background-color: red;
+    color: white;
+}

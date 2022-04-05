@@ -18,6 +18,7 @@ export class CreatePostComponent implements OnInit {
   isImage = isImage;
   isHeading = isHeading;
   isLink = isLink;
+  ContentType = ContentType;
 
   constructor(private firebaseService: FirebaseService, private router: Router) { }
 
@@ -84,6 +85,10 @@ export class CreatePostComponent implements OnInit {
     );
     this.firebaseService.createPost(post);
     this.router.navigateByUrl('/home');
+  }
+
+  removeContent(id: number) {
+    this.content.splice(id, 1);
   }
 
 }

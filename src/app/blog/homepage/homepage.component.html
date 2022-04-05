@@ -16,8 +16,8 @@
         <app-post-preview *ngFor="let post of postPreviews;" [postPreview]="post" (postId)="navigateOnClick($event)"></app-post-preview>
     </div>
     <div class="other-links">
-        <a routerLink="/home/create">Create New Post</a>
         <button (click)="signInWithGoogle()">Login With Google</button>
+        <a routerLink="/home/create" style="display: block;">Create New Post</a>
     </div>
 </div>
 

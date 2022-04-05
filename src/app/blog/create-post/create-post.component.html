@@ -11,7 +11,9 @@
     <div class="fill-content-section">
         <label for="title">Title</label>
         <input id="title" [(ngModel)]="title" />
-        <div *ngFor="let cont of content;">
+        <div *ngFor="let cont of content; let i = index;" class="content-list">
+            <label class="content-type-label">{{ContentType[cont.type]}}</label>
+            <button (click)="removeContent(i)" class="remove-button">Remove</button>
             <textarea *ngIf="cont | guardType : isText as t" class="text-content" [(ngModel)]="t.text"></textarea>
             <textarea *ngIf="cont | guardType : isCode as c" class="code-content" [(ngModel)]="c.code"></textarea>
             <input *ngIf="cont | guardType : isImage as i" [(ngModel)]="i.url" />
