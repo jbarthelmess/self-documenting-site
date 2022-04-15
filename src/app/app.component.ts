@@ -8,10 +8,5 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'self-documenting-site';
-
-  constructor(private router: Router) {}
-
-  navigateHome() {
-    this.router.navigateByUrl('/home')
-  }
+  constructor() {}
 }

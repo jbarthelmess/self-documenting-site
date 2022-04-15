@@ -10,6 +10,9 @@ import { GuardTypePipe } from './util/pipe/guard-type.pipe';
 import { PostPreviewComponent } from './blog/post-preview/post-preview.component';
 import { CreatePostComponent } from './blog/create-post/create-post.component';
 import { FormsModule } from '@angular/forms';
+import { BoardComponent } from './minesweeper-world/board/board.component';
+import { TileComponent } from './minesweeper-world/tile/tile.component';
+import { ToolbarComponent } from './util/toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { FormsModule } from '@angular/forms';
     PostComponent,
     GuardTypePipe,
     PostPreviewComponent,
-    CreatePostComponent
+    CreatePostComponent,
+    BoardComponent,
+    TileComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,

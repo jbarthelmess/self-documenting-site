@@ -1,0 +1,25 @@
+<div class="toolbar">
+	<span class="bomb-count">{{bombsFound}}/{{bombCount}}</span>
+	<button class="mode-select" [ngClass]="{'mode-selected': selectedMode}" (click)="setMode(true)">Select</button>
+	<button class="mode-select" [ngClass]="{'mode-selected': !selectedMode}" (click)="setMode(false)">Drag</button>
+</div>
+<div class="container"
+[style.width.px]="width"
+[style.height.px]="height"
+[style.left.px]="left"
+[style.top.px]="top"
+[style.cursor]="!selectedMode ? 'move' : 'default'"
+(mousedown)="!selectedMode && drag($event)"
+(mousemove)="!selectedMode && isDragging && move($event)"
+(mouseup)="  !selectedMode && isDragging && drop()">
+	<div class="row" *ngFor="let row of tiles;">
+		<app-tile *ngFor="let tile of row;" 
+		[tile]="tile" 
+		[selectedMode]="selectedMode" 
+		[sideLength]="tileSideLengthPx"
+		(openNeighbors)="openNeighbors($event)" 
+		(gameOver)="gameOver($event)" 
+		(marked)="updateBombsFound($event)"
+		></app-tile>
+	</div>
+</div>

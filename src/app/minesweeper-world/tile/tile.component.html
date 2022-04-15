@@ -1,0 +1,10 @@
+<div [class.open]="tile.isOpen" 
+[class.marked]="tile.isMarked" 
+[class.start]="tile.isStart && !tile.isOpen"
+[style.width.px]="sideLength - 2"
+[style.height.px]="sideLength - 2"
+[style.line-height.px]="sideLength - 2"
+(click)="select()" 
+(contextmenu)="mark($event)">
+	{{ tile.isOpen && tile.bombNeighbors > 0 ? tile.bombNeighbors : ''}}
+</div>

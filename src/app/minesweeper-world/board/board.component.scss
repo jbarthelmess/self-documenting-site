@@ -1,0 +1,40 @@
+
+.container {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.row {
+	display: flex;
+}
+
+.toolbar {
+	position: fixed;
+	top: 0;
+	z-index: 1;
+	left: 25%;
+	right: 25%;
+	height: 60px;
+	background-color: white;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	border-radius: 0px 0px 20px 20px;
+}
+
+.mode-select {
+	border: none;
+	transition: 0.2s;
+	height: 50%;
+	background-color: white;
+}
+
+.mode-selected {
+	background-color: lightgray;
+}
+
+.mode-select:hover {
+	background-color: lightgray;
+}
