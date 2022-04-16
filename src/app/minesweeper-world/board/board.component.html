@@ -2,13 +2,15 @@
 	<span class="bomb-count">{{bombsFound}}/{{bombCount}}</span>
 	<button class="mode-select" [ngClass]="{'mode-selected': selectedMode}" (click)="setMode(true)">Select</button>
 	<button class="mode-select" [ngClass]="{'mode-selected': !selectedMode}" (click)="setMode(false)">Drag</button>
+	<button class="mode-select" [ngClass]="{'mode-selected': instructionsOpen}" (click)="toggleInstructions()">Instructions</button>
+	<a routerLink="/home">Back to HomePage</a>
 </div>
 <div class="container"
 [style.width.px]="width"
 [style.height.px]="height"
 [style.left.px]="left"
 [style.top.px]="top"
-[style.cursor]="!selectedMode ? 'move' : 'default'"
+[style.cursor]="selectedMode ? 'default' : (isDragging ? 'grabbing' : 'grab')"
 (mousedown)="!selectedMode && drag($event)"
 (mousemove)="!selectedMode && isDragging && move($event)"
 (mouseup)="  !selectedMode && isDragging && drop()">
@@ -20,6 +22,46 @@
 		(openNeighbors)="openNeighbors($event)" 
 		(gameOver)="gameOver($event)" 
 		(marked)="updateBombsFound($event)"
+		(opened)="updateSafeFound()"
 		></app-tile>
 	</div>
 </div>
+
+<dialog #instructions class="modal">
+	<h2>How to Play</h2>
+	<p>This is a version of Minesweeper with no boundaries. The grid wraps around itself and 
+		the game allows the player to drag the field of view around to view different parts of
+		the grid. To view these instructions again, click the <b>Instructions</b> button in the 
+		toolbar at the top of the page.
+	</p>
+	<h4>Minesweeper Rules</h4>
+	<p>Each tile on the grid is either <b>safe</b> or a <b>Mine</b>, and the goal of the game is 
+		to open all the safe tiles, while avoiding all the mines. When all the safe tiles are open,
+		you have won! If you attempt to open a tile that is a mine, you will lose.
+	</p>
+	<p>Each safe tile you open will give you information about how many mines neighbor that tile. 
+		If the tile is blank, that means it has no neighbors as mines. Otherwise it will have a 
+		number from 1-8 indicating how many of it's neighbors are mines. 
+	</p>
+	<h4>Opening Tiles</h4>
+	<p>To open a tile, simply click on it. If you open tile with no bomb neighbors, all of it's 
+		neighbors will be opened automatically, and it will spread out, until there are no more 
+		zero tile neighbors.
+	</p>
+	<p>To mark a tile as a bomb, simply right click on it (or ctrl + click for Mac). Doing this will
+		turn the tile <b class="red">red</b> and prevent you from opening the tile in the future. 
+		You can un-mark bombs by right clicking on them again, to return them to an unopened status. 
+		<b>Note: You do not need to mark all the bomb tiles to win the game, only open the safe ones. 
+		Marking tiles is merely a convenience for the player.</b>
+	</p>
+	<p>At the beginning of the game, there will be one tile that is colored <b class="green">green.</b> 
+		This tile is guaranteed to be safe, and have no neighbors that are bombs. The player may elect 
+		to open this tile at the start of the game, to prevent tedious guessing in the beginning. We 
+		hope you enjoy playing Minesweeper World!
+	</p>
+	<button (click)="toggleInstructions()">Close</button>
+</dialog>
+<dialog #result class="modal">
+	<span class="result-text"><b>{{resultText}}</b></span>
+	<button (click)="closeResult()">Close</button>
+</dialog>

@@ -13,6 +13,7 @@ export class TileComponent implements OnInit {
   @Output() openNeighbors: EventEmitter<number> = new EventEmitter();
   @Output() gameOver: EventEmitter<number> = new EventEmitter();
   @Output() marked: EventEmitter<boolean> = new EventEmitter();
+  @Output() opened: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
 
@@ -22,7 +23,6 @@ export class TileComponent implements OnInit {
   select() {
     // console.log(`Opening ${this.tile.id}`);
     if (this.selectedMode) {
-      console.log(`Printing from tile ${this.tile.id}: selectedMode is true`);
       if (this.tile.isBomb && !this.tile.isMarked && !this.tile.isOpen) {
         // emit some sort of game over message if we opened an unmarked bomb
         this.gameOver.emit(this.tile.id);
@@ -32,6 +32,8 @@ export class TileComponent implements OnInit {
         if (this.tile.bombNeighbors === 0) {
           // emit that the board should open this tiles neighbors
           this.openNeighbors.emit(this.tile.id);
+        } else {
+          this.opened.emit(this.tile.id);
         }
       } // if not a bomb and already opened, or marked, do nothing
     } // if not in selectedMode, do nothing

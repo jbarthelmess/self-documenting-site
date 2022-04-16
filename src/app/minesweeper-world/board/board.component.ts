@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Tile } from '../model/tile.model';
+
+import * as dialogPolyfill from 'dialog-polyfill';
 
 @Component({
   selector: 'app-board',
@@ -15,6 +17,8 @@ export class BoardComponent implements OnInit {
   selectedMode: boolean = false;
   isDragging: boolean = false;
   bombsFound: number = 0;
+  safeFound: number = 0;
+  safeCount: number = 0;
 
   lastPosX: number = 0;
   lastPosY: number = 0;
@@ -38,6 +42,12 @@ export class BoardComponent implements OnInit {
   height: number = 0;
   top: number = 0;
   left: number = 0;
+
+  resultText: string = "You Win!";
+  instructionsOpen: boolean = true;
+  @ViewChild('instructions') instructionDialog!: ElementRef;
+  @ViewChild('result') resultDialog!: ElementRef;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -49,10 +59,10 @@ export class BoardComponent implements OnInit {
     this.rowLength = tilesInViewWidth*3;
     this.numRows = tilesInViewHeight*3;
     this.bombCount = Math.floor(0.2 * this.rowLength * this.numRows);
+    this.safeCount = (this.rowLength * this.numRows) - this.bombCount;
 
     this.width = this.tileSideLengthPx*this.rowLength;
     this.height = this.tileSideLengthPx*this.numRows;
-    console.log(`rowLength: ${this.rowLength}\nnumRows: ${this.numRows}`);
 
     this.top = -1 * Math.floor(this.height / 3);
     this.left = -1 * Math.floor(this.width / 3);
@@ -78,7 +88,6 @@ export class BoardComponent implements OnInit {
           const intersection = neighbors.filter(num => bombTiles.includes(num));
           tile.bombNeighbors = intersection.length;
           if (tile.id === id) {
-            console.log(`Setting start for tile ${id}`);
             tile.isStart = true;
           }
         }
@@ -88,18 +97,35 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    dialogPolyfill.default.registerDialog(this.instructionDialog.nativeElement);
+    dialogPolyfill.default.registerDialog(this.resultDialog.nativeElement);
+    this.instructionDialog.nativeElement.showModal();
+  }
+
+  closeResult() {
+    this.resultDialog.nativeElement.close();
+  }
+
+  toggleInstructions() {
+    if(this.instructionsOpen) {
+      this.instructionDialog.nativeElement.close();
+    } else {
+      this.instructionDialog.nativeElement.showModal();
+    }
+    this.instructionsOpen = !this.instructionsOpen;
+  }
+
   openNeighbors(id: number) {
     // need to open the neighbors of the id that was emitted.
-    console.log(`Opening Neighbors of ${id}`);
+    this.safeFound += 1;
     let tilesToOpen = this.getNeighbors(id);
-    for (const item of tilesToOpen) {
-      console.log(item);
-    }
     while (tilesToOpen.length > 0) {
       const tileId = tilesToOpen.splice(0, 1)[0]; // get the first item in the list to open
       const tile = this.getTile(tileId);
       if (!tile.isOpen) {
         tile.isOpen = true;
+        this.safeFound += 1;
         if (tile.bombNeighbors === 0) { // if the neighbor is also zero, need to open it's neighbors too.
           const neighbors = this.getNeighbors(tileId);
           tilesToOpen = [...tilesToOpen, ...neighbors];
@@ -110,7 +136,7 @@ export class BoardComponent implements OnInit {
 
   gameOver(id: number) {
     // need to make the game a game over screen.
-    console.log(`Lost by selecting Tile ${id}`);
+    this.resultText = "You Lose!";
     for (let row of this.tiles) {
       for (let tile of row) {
         if (tile.isBomb) {
@@ -118,6 +144,7 @@ export class BoardComponent implements OnInit {
         }
       }
     }
+    this.resultDialog.nativeElement.showModal();
   }
 
   getNeighbors(id: number): number[] {
@@ -200,11 +227,6 @@ export class BoardComponent implements OnInit {
       overShootDistanceTop,
       underShootDistanceTop
     ], topAnchorDistance);
-
-    console.log(`Total Distance from left Anchor: ${leftAnchorDistance}\nDistance from to Anchor: ${topAnchorDistance}`);
-    console.log(`Rotating ${actualDistanceChangeLeft/this.tileSideLengthPx} columns to be ${leftAnchorDistance - actualDistanceChangeLeft} pixels from the left anchor`);
-    console.log(`Rotating ${actualDistanceChangeTop/this.tileSideLengthPx} rows to be ${topAnchorDistance - actualDistanceChangeTop} pixels from the top anchor`);
-    
     // calculate how much to rotate the board.
 
     // apply changes to the board
@@ -233,6 +255,13 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  updateSafeFound() {
+    this.safeFound += 1;
+    if(this.safeFound === this.safeCount) {
+      this.resultDialog.nativeElement.showModal();
+    }
+  }
+
   rotateBoard(rowRotation: number, colRotation: number) {
     let newTileBoard = [];
     for(let i = 0; i < this.numRows; i++) {
@@ -248,7 +277,6 @@ export class BoardComponent implements OnInit {
     // update row and col rotation values to new rotation after updating the board.
     this.rowRotation = (this.rowRotation + rowRotation + this.numRows) % this.numRows;
     this.colRotation = (this.colRotation + colRotation + this.rowLength) % this.rowLength;
-    console.log(`new rowRotation: ${this.rowRotation}\nnew colRotation: ${this.colRotation}`)
   }
 
 }
