@@ -144,17 +144,18 @@ export class FirebaseService {
     return this.posts.get(id);
   }
 
-  getPostContent(postPreview: PostPreview): Post {
+  async getPostContent(postPreview: PostPreview): Promise<Post> {
     const dbRef = ref(this.database, `content`);
     let content: Content[] = [];
-    postPreview.contentIds.forEach(async (id) => {
+    const promises = postPreview.contentIds.map(async (id) => {
       const snapshot = await get(child(dbRef, `${id}`));
       const raw = snapshot.val();
-      content.push({
+      return {
         ...raw,
         id
-      });
+      };
     });
+    content = await Promise.all(promises)
     return {
       id: postPreview.id, 
       title: postPreview.title, 

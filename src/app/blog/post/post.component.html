@@ -11,9 +11,9 @@ blog more engaging. -->
         <h1>{{post.title}}</h1>
 
         <div *ngFor="let item of post.content;">
-            <p *ngIf="item | guardType : isText as text">{{text.text}}</p>
+            <p *ngIf="item | guardType : isText as text" [innerHTML]="text.text"></p>
             <img *ngIf="item | guardType : isImage as image" [src]="image.url" />
-            <pre *ngIf="item | guardType : isCode as code"><code>{{code.code}}</code></pre>
+            <pre *ngIf="item | guardType : isCode as code"><code [innerHTML]="code.code"></code></pre>
             <a *ngIf="item | guardType : isLink as link" [href]="link.url">{{link.url}}</a>
             <h3 *ngIf="item | guardType : isHeading as heading">{{heading.text}}</h3>
         </div>

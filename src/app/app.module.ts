@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 import { BoardComponent } from './minesweeper-world/board/board.component';
 import { TileComponent } from './minesweeper-world/tile/tile.component';
 import { ToolbarComponent } from './util/toolbar/toolbar.component';
+import { FirebaseService } from './db/firebase.service';
+import { HighlightService } from './util/highlight.service';
 
 @NgModule({
   declarations: [

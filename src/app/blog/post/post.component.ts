@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseService } from 'src/app/db/firebase.service';
-import { isCode, isHeading, isImage, isLink, isText } from '../model/content.model';
+import { HighlightService } from 'src/app/util/highlight.service';
+import { ContentType, isCode, isHeading, isImage, isLink, isText } from '../model/content.model';
 import { PostPreview } from '../model/post-preview.model';
 import { Post } from '../model/post.model';
 
@@ -25,7 +26,8 @@ export class PostComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private highlightService: HighlightService
   ) {}
 
   ngOnInit(): void {
@@ -34,17 +36,26 @@ export class PostComponent implements OnInit {
       const postPreview = this.firebaseService.getPost(id);
       if(postPreview) {
         this.postPreview = postPreview;
-        const postCheck = this.firebaseService.getPostContent(postPreview);
-        if(postCheck) {
-          this.post = postCheck;
-        } else {
-          this.router.navigateByUrl("/home");
-        }
-      } else {
-        this.router.navigateByUrl("/home");
+        this.firebaseService.getPostContent(postPreview).then(postCheck => {
+          if(postCheck) {
+            //this.post = postCheck;
+            this.post = this.processPost(postCheck);
+          } else {
+            this.router.navigateByUrl("/home");
+          }
+          this.getNeighboringPosts();
+        });
       }
-      this.getNeighboringPosts();
     });
+  }
+
+  processPost(recievedPost: Post): Post {
+    for (let content of recievedPost.content) {
+      if (content.type === ContentType.Code) {
+        content.code = this.highlightService.highlightCode(content.code, 'typescript');
+      }
+    }
+    return recievedPost;
   }
 
   getNeighboringPosts() {
