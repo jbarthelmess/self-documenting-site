@@ -6,7 +6,7 @@
 }
 
 .add-content-button {
-    height: 100px;
+    height: 200px;
     background-color: darkgray;
     width: 19%;
     border-radius: 10px;
@@ -30,23 +30,28 @@
     border: 1px solid black;
     border-radius: 5px;
     width: 50%;
-    height: 20%;
+    height: 10%;
 }
 
 .text-content {
     font-size: 12pt;
-}
-
-.code-content {
-    font-size: 12pt;
+    min-height: 100px;
+    max-width: 95%;
+    justify-self: center;
+    align-self: center;
+    resize: horizontal;
+    tab-size: 4;
+    -moz-tab-size : 4;
+    -o-tab-size : 4;
 }
 
 .content-list {
     display: flex;
     flex-direction: column;
+    width: 100%
 }
 
-.content-type-list {
+.content-type-label {
     justify-self: center;
     text-align: center;
 }
@@ -54,4 +59,7 @@
 .remove-button {
     background-color: red;
     color: white;
+    width: 100px;
+    justify-self: center;
+    align-self: center;
 }

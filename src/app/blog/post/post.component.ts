@@ -52,7 +52,7 @@ export class PostComponent implements OnInit {
   processPost(recievedPost: Post): Post {
     for (let content of recievedPost.content) {
       if (content.type === ContentType.Code) {
-        content.code = this.highlightService.highlightCode(content.code, 'typescript');
+        content.code = this.highlightService.highlightCode(content.code, content.lang ? content.lang : "javascript");
       }
     }
     return recievedPost;
