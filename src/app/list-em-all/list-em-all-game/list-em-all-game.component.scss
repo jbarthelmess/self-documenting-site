@@ -1,0 +1,17 @@
+
+.input-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.pokemon-list {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.pokemon {
+    border: 1px solid black;
+    width: 100px;
+}

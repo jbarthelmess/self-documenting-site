@@ -1,0 +1,17 @@
+
+<div class="input-container">
+    <input [(ngModel)]="pokemon" (ngModelChange)="checkForPokemon()"/>
+    <select [(ngModel)]="generationPick">
+        <option *ngFor="let gen of generation;">{{gen.number}}</option>
+    </select>
+    <button (click)="getGenerationPokemon()">Play Game</button>
+    <span>{{timeLeft | date : 'mm:ss'}}</span>
+</div>
+
+
+<ol class="pokemon-list" [start]="generation[generationPick-1].offset + 1">
+    <li *ngFor="let mon of pokemonList;" class="pokemon">
+        <span *ngIf="mon.found">{{mon.name}}</span>
+    </li>
+</ol>
+

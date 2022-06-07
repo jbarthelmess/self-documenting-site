@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,12 +11,13 @@ import { PostComponent } from './blog/post/post.component';
 import { GuardTypePipe } from './util/pipe/guard-type.pipe';
 import { PostPreviewComponent } from './blog/post-preview/post-preview.component';
 import { CreatePostComponent } from './blog/create-post/create-post.component';
-import { FormsModule } from '@angular/forms';
+
 import { BoardComponent } from './minesweeper-world/board/board.component';
 import { TileComponent } from './minesweeper-world/tile/tile.component';
 import { ToolbarComponent } from './util/toolbar/toolbar.component';
 import { FirebaseService } from './db/firebase.service';
 import { HighlightService } from './util/highlight.service';
+import { ListEmAllGameComponent } from './list-em-all/list-em-all-game/list-em-all-game.component';
 
 @NgModule({
   declarations: [
@@ -27,12 +30,14 @@ import { HighlightService } from './util/highlight.service';
     CreatePostComponent,
     BoardComponent,
     TileComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    ListEmAllGameComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

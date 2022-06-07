@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { CreatePostComponent } from './blog/create-post/create-post.component';
 import { HomepageComponent } from './blog/homepage/homepage.component';
 import { PostComponent } from './blog/post/post.component';
+import { ListEmAllGameComponent } from './list-em-all/list-em-all-game/list-em-all-game.component';
 import { BoardComponent } from './minesweeper-world/board/board.component';
 import { IsBlogOwnerGuard } from './util/guard/is-blog-owner.guard';
 
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path: 'minesweeper',
     component: BoardComponent
+  },
+  {
+    path: 'list-em-all',
+    component: ListEmAllGameComponent
   },
   {
     path: '',
