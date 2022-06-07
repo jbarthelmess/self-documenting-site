@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-
-// Import the functions you need from the SDKs you need
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { child, Database, get, getDatabase, onValue, push, ref, set } from "firebase/database";
 import { getAuth, Auth, User, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
@@ -8,10 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Content, isCode, isHeading, isImage, isLink, isText } from '../blog/model/content.model';
 import { PostPreview } from '../blog/model/post-preview.model';
 import { Post } from '../blog/model/post.model';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyD6XwkQzK7wiDxZmU8BwxX7x3oulXvoUCs",
   authDomain: "self-documenting-blog.firebaseapp.com",
@@ -72,7 +67,8 @@ export class FirebaseService {
       clone = {
         order: content.order,
         type: content.type,
-        code: content.code
+        code: content.code,
+        lang: content.lang ? content.lang : 'javascript'
       };
     } else if(isText(content) || isHeading(content)) {
       clone = {
@@ -156,6 +152,7 @@ export class FirebaseService {
       };
     });
     content = await Promise.all(promises)
+    content.sort((a, b) => a.order - b.order)
     return {
       id: postPreview.id, 
       title: postPreview.title, 

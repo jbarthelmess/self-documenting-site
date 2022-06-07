@@ -3,6 +3,11 @@ enum for type checking in the html. We will need a typeguard  */
 
 import { TypeGuard } from "src/app/util/pipe/guard-type.pipe";
 
+export enum Languages {
+    javascript = "javascript",
+    html = "html",
+}
+
 export enum ContentType {
     Text,
     Image,
@@ -16,6 +21,7 @@ export interface Code {
     order: number;
     type: ContentType.Code;
     code: string;
+    lang?: string;
 }
 
 export interface Text {

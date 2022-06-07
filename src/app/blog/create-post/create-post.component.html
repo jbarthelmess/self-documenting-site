@@ -3,11 +3,11 @@
 <h1>Create New Post</h1>
 <div class="post-creation-container">
     <div class="add-content-button">
-        <button (click)="addText()" class="add-button">Add Text</button>
-        <button (click)="addCode()" class="add-button">Add Code</button>
-        <button (click)="addImage()" class="add-button">Add Image</button>
-        <button (click)="addHeading()" class="add-button">Add Heading</button>
-        <button (click)="addLink()" class="add-button">Add Link</button>
+        <button (click)="addContent(ContentType.Text)" class="add-button">Add Text</button>
+        <button (click)="addContent(ContentType.Code)" class="add-button">Add Code</button>
+        <button (click)="addContent(ContentType.Image)" class="add-button">Add Image</button>
+        <button (click)="addContent(ContentType.Heading)" class="add-button">Add Heading</button>
+        <button (click)="addContent(ContentType.Link)" class="add-button">Add Link</button>
     </div>
     <div class="fill-content-section">
         <label for="title">Title</label>
@@ -15,8 +15,31 @@
         <div *ngFor="let cont of content; let i = index;" class="content-list">
             <label class="content-type-label">{{ContentType[cont.type]}}</label>
             <button (click)="removeContent(i)" class="remove-button">Remove</button>
-            <textarea *ngIf="cont | guardType : isText as t" class="text-content" [(ngModel)]="t.text"></textarea>
-            <textarea *ngIf="cont | guardType : isCode as c" class="code-content" [(ngModel)]="c.code"></textarea>
+            <!-- The two text areas below are meant to auto resize to fit the needs 
+                of the growing text inside of the text area with me having to manually
+                resize the areas. I've made the default width 100 characters which 
+                should be fine for most code and is a good readable length for paragraphs. 
+                The two separate calculations for the number of rows reflects the 
+                differences in how the two types of text are typed into the box. Code
+                will retain it's whitespace and will have lots of newline characters, 
+                while paragraphs will simply -->
+            <textarea *ngIf="cont | guardType : isText as t" 
+                class="text-content" 
+                [(ngModel)]="t.text" 
+                [rows]="t.text.length / 100" 
+                cols="100"
+                (keydown)="addTabToTextArea($event)"></textarea>
+            <select *ngIf="cont | guardType : isCode as c" 
+                class="code-selection" 
+                [(ngModel)]="c.lang">
+                <option *ngFor="let lang of langs;">{{lang}}</option>
+            </select>
+            <textarea *ngIf="cont | guardType : isCode as c" 
+                class="text-content" 
+                [(ngModel)]="c.code" 
+                [rows]="c.code.split('\n').length + 1 || 2" 
+                cols="100"
+                (keydown)="addTabToTextArea($event)"></textarea>
             <input *ngIf="cont | guardType : isImage as i" [(ngModel)]="i.url" />
             <input *ngIf="cont | guardType : isLink as l" [(ngModel)]="l.url" />
             <input *ngIf="cont | guardType : isHeading as h" [(ngModel)]="h.text" />

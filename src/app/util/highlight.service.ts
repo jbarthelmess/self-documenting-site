@@ -9,7 +9,8 @@ export class HighlightService {
 
   constructor() { }
 
-  highlightCode(code: string, language: string | undefined) : string {
-    return highlight(code, languages['javascript'], 'javascript')
+  highlightCode(code: string, language: string) : string {
+    console.log(languages['html'])
+    return highlight(code, languages[language], language)
   }
 }
