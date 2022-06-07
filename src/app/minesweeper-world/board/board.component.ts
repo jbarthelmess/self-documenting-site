@@ -8,7 +8,7 @@ import * as dialogPolyfill from 'dialog-polyfill';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, AfterViewInit {
   tiles: Tile[][] = [];
   tileSideLengthPx: number = 52;
   rowLength: number = 10;

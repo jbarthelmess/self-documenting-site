@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PokemonData, Generation } from '../list-em-all-models';
 import { PokemonServiceService } from '../services/pokemon-service.service';
+
+import * as dialogPolyfill from 'dialog-polyfill';
 
 @Component({
   selector: 'app-list-em-all-game',
   templateUrl: './list-em-all-game.component.html',
   styleUrls: ['./list-em-all-game.component.scss']
 })
-export class ListEmAllGameComponent implements OnInit {
+export class ListEmAllGameComponent implements OnInit, AfterViewInit {
   pokemonList: PokemonData[] = [];
   pokemon: string = "";
   notFoundMap: Map<string, number> = new Map();
@@ -37,8 +39,34 @@ export class ListEmAllGameComponent implements OnInit {
       number: 4,
       count: 107,
       offset: 386,
-    }
+    },
+    {
+      number: 5,
+      count: 156,
+      offset: 493
+    },
+    {
+      number: 6,
+      count: 72,
+      offset: 649
+    },
+    {
+      number: 7,
+      count: 88,
+      offset: 721
+    },
+    {
+      number: 8,
+      count: 89,
+      offset: 809
+    },
   ]
+
+  resultText: string = "You Win!"
+  instructionsOpen: boolean = true;
+  @ViewChild('instructions') instructionDialog!: ElementRef;
+  @ViewChild('result') resultDialog!: ElementRef;
+
   constructor(private pokeService: PokemonServiceService) { }
 
   ngOnInit(): void {
@@ -47,11 +75,35 @@ export class ListEmAllGameComponent implements OnInit {
     this.exceptions.set('giratina-altered', 'Giratina');
     this.exceptions.set('shaymin-land', 'Shaymin');
     this.exceptions.set('mime-jr', 'Mime Jr.');
+    this.exceptions.set('type-null', 'Type: Null');
+    this.exceptions.set('tapu-koko', 'Tapu Koko');
+    this.exceptions.set('tapu-lele', 'Tapu Lele');
+    this.exceptions.set('tapu-bulu', 'Tapu Bulu');
+    this.exceptions.set('tapu-fini', 'Tapu Fini');
+    this.exceptions.set('mr-rime', 'Mr. Rime');
+  }
+
+  ngAfterViewInit(): void {
+    dialogPolyfill.default.registerDialog(this.instructionDialog.nativeElement);
+    dialogPolyfill.default.registerDialog(this.resultDialog.nativeElement);
+    this.instructionDialog.nativeElement.showModal();
+  }
+
+  toggleInstructions() {
+    if(this.instructionsOpen) {
+      this.instructionDialog.nativeElement.close();
+    } else {
+      this.instructionDialog.nativeElement.showModal();
+    }
+    this.instructionsOpen = !this.instructionsOpen;
+  }
+
+  closeResult() {
+    this.resultDialog.nativeElement.close();
   }
 
   getGenerationPokemon() {
     this.pokeService.getGenerationPokemon(this.generation[this.generationPick-1]).subscribe(data => {
-      console.log(data);
       this.pokemonList = data.results.map((basic, index) => {
         let name: string;
         const exceptionCheck = this.exceptions.get(basic.name);
@@ -66,6 +118,7 @@ export class ListEmAllGameComponent implements OnInit {
         return {
           name,
           found: false,
+          notFound: false,
           id: index + this.generation[this.generationPick-1].offset + 1
         }
       });
@@ -74,6 +127,14 @@ export class ListEmAllGameComponent implements OnInit {
     this.interval = setInterval(() => {
       this.timeLeft = this.timeLeft - 1000;
       if(this.timeLeft <= 0) {
+        for(let mon of this.pokemonList) {
+          if(!mon.found) {
+            mon.found = true;
+            mon.notFound = true;
+          }
+        }
+        this.resultText = "You Lose!";
+        this.resultDialog.nativeElement.showModal();
         // do something to lose
         if (this.interval !== null) {
           clearInterval(this.interval);
@@ -91,6 +152,7 @@ export class ListEmAllGameComponent implements OnInit {
       this.pokemon = '';
       if(this.notFoundMap.size === 0) {
         // do something for winning
+        this.resultDialog.nativeElement.showModal();
         if (this.interval !== null) {
           clearInterval(this.interval);
           this.interval = null;

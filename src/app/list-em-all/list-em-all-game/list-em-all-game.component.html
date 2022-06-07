@@ -5,9 +5,10 @@
         <option *ngFor="let gen of generation;">{{gen.number}}</option>
     </select>
     <button (click)="getGenerationPokemon()">Play Game</button>
+    <button (click)="toggleInstructions()">Instructions</button>
     <span>{{timeLeft | date : 'mm:ss'}}</span>
 </div>
-
+ 
 
 <ol class="pokemon-list" [start]="generation[generationPick-1].offset + 1">
     <li *ngFor="let mon of pokemonList;" class="pokemon">
@@ -15,3 +16,19 @@
     </li>
 </ol>
 
+<dialog #instructions class="modal">
+    <h2>How to Play</h2>
+    <p>
+        Select a generation of Pokemon to play and then click start game! An empty 
+        list will appear and you will be able to start entering the names of different
+        pokemon from the selected generation. Try to name them all within the time limit!
+    </p>
+    <br>
+    <button (click)="toggleInstructions()">Close</button>
+</dialog>
+
+<dialog #result class="modal">
+    <h2>{{resultText}}</h2>
+    <br>
+    <button (click)="closeResult()">Close</button>
+</dialog>

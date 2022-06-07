@@ -2,6 +2,7 @@ export type PokemonData = {
     name: string;
     id: number;
     found: boolean;
+    notFound: boolean;
 }
 
 export type Generation = {
