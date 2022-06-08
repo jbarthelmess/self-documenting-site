@@ -13,7 +13,7 @@ export class ListEmAllGameComponent implements OnInit, AfterViewInit {
   pokemonList: PokemonData[] = [];
   pokemon: string = "";
   notFoundMap: Map<string, number> = new Map();
-  generationPick: number = 1;
+  generationPick: number = 0;
   interval: ReturnType<typeof setInterval> | null = null;
   timeLeft: number = 0;
 
@@ -99,10 +99,18 @@ export class ListEmAllGameComponent implements OnInit, AfterViewInit {
   }
 
   closeResult() {
+    this.resultText = "You Win!";
     this.resultDialog.nativeElement.close();
   }
 
   getGenerationPokemon() {
+    // using double equals here because ngModel automatically
+    // makes generationPick a string...
+    if(this.generationPick == 0) {
+      this.resultText = "Please select a generation before beginning the game.";
+      this.resultDialog.nativeElement.showModal();
+      return;
+    }
     this.pokeService.getGenerationPokemon(this.generation[this.generationPick-1]).subscribe(data => {
       this.pokemonList = data.results.map((basic, index) => {
         let name: string;
@@ -133,6 +141,7 @@ export class ListEmAllGameComponent implements OnInit, AfterViewInit {
             mon.notFound = true;
           }
         }
+        this.notFoundMap.clear();
         this.resultText = "You Lose!";
         this.resultDialog.nativeElement.showModal();
         // do something to lose

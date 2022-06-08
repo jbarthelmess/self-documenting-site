@@ -20,3 +20,20 @@
 	max-width: 50%;
 	min-width: 33%;
 }
+
+.notFound {
+    background-color: hotpink;
+}
+
+.control-button {
+    border: none;
+    transition: 0.2s;
+	height: 50%;
+	background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-selected, .control-button:hover {
+    background-color: lightgray;
+}

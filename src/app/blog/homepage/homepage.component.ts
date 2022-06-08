@@ -36,4 +36,13 @@ export class HomepageComponent implements OnInit, OnDestroy {
   signInWithGoogle() {
     this.firebaseService.signInWithGoogle();
   }
+
+  hasPermissions() : boolean {
+    let user = this.firebaseService.getUser();
+    if(user === null || user.email !== "joshbarthelmess3@gmail.com") {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

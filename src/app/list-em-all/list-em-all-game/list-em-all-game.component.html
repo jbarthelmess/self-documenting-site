@@ -1,17 +1,26 @@
-
+<app-toolbar></app-toolbar>
+<app-toolbar-buffer></app-toolbar-buffer>
 <div class="input-container">
-    <input [(ngModel)]="pokemon" (ngModelChange)="checkForPokemon()"/>
-    <select [(ngModel)]="generationPick">
-        <option *ngFor="let gen of generation;">{{gen.number}}</option>
-    </select>
-    <button (click)="getGenerationPokemon()">Play Game</button>
-    <button (click)="toggleInstructions()">Instructions</button>
-    <span>{{timeLeft | date : 'mm:ss'}}</span>
+    <div class="input-plus-label">
+        <label for="pokemon-input">Pok&eacute;mon Name:</label>
+        <input [(ngModel)]="pokemon" (ngModelChange)="checkForPokemon()"/>
+    </div>
+    <div class="input-plus-label">
+        <label for="generation-input">Pok&eacute;mon Generation:</label>
+        <select [(ngModel)]="generationPick">
+            <option selected [value]="0">Select Generation</option>
+            <option *ngFor="let gen of generation;" [value]="gen.number">Generation {{gen.number}}</option>
+        </select>
+    </div>
+    <button (click)="getGenerationPokemon()" class="control-button">Play Game</button>
+    <button (click)="toggleInstructions()" class="control-button" [ngClass]="{'button-selected': instructionsOpen}">Instructions</button>
+    <span>Time Remaining: {{timeLeft | date : 'mm:ss'}}</span>
 </div>
  
-
-<ol class="pokemon-list" [start]="generation[generationPick-1].offset + 1">
-    <li *ngFor="let mon of pokemonList;" class="pokemon">
+        <!-- Using double equals here for generation pick check, 
+            because generationPick is made a string by ngModel -->
+<ol class="pokemon-list" [start]="generationPick == 0 ? 0 :generation[generationPick-1].offset + 1">
+    <li *ngFor="let mon of pokemonList;" class="pokemon" [ngClass]="{'notFound': mon.notFound}">
         <span *ngIf="mon.found">{{mon.name}}</span>
     </li>
 </ol>
@@ -19,7 +28,7 @@
 <dialog #instructions class="modal">
     <h2>How to Play</h2>
     <p>
-        Select a generation of Pokemon to play and then click start game! An empty 
+        Select a generation of Pok&eacute;mon to play and then click start game! An empty 
         list will appear and you will be able to start entering the names of different
         pokemon from the selected generation. Try to name them all within the time limit!
     </p>

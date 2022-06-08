@@ -18,7 +18,16 @@
     </div>
     <div class="other-links">
         <button (click)="signInWithGoogle()">Login With Google</button>
-        <a routerLink="/home/create" style="display: block;">Create New Post</a>
+        <a routerLink="/home/create" style="display: block;" *ngIf="hasPermissions()">Create New Post</a>
+        <div class="game-display">
+            <a routerLink="/minesweeper" class="game-link">Minesweeper World</a>
+            <p>Play an upscale twist on the classic game without borders!</p>
+        </div>
+        <div class="game-display">
+            <a routerLink="/list-em-all" class="game-link">Gotta List 'em all!</a>
+            <p>Test Your Pok&eacute;mon knowledge by listing 'em all in each generation!</p>
+        </div>
+        
     </div>
 </div>
 
