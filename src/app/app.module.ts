@@ -18,6 +18,7 @@ import { ToolbarComponent } from './util/toolbar/toolbar.component';
 import { FirebaseService } from './db/firebase.service';
 import { HighlightService } from './util/highlight.service';
 import { ListEmAllGameComponent } from './list-em-all/list-em-all-game/list-em-all-game.component';
+import { SnakeGameComponent } from './snake/snake-game/snake-game.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ListEmAllGameComponent } from './list-em-all/list-em-all-game/list-em-a
     BoardComponent,
     TileComponent,
     ToolbarComponent,
-    ListEmAllGameComponent
+    ListEmAllGameComponent,
+    SnakeGameComponent
   ],
   imports: [
     BrowserModule,

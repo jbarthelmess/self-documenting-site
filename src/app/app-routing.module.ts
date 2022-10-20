@@ -6,6 +6,7 @@ import { HomepageComponent } from './blog/homepage/homepage.component';
 import { PostComponent } from './blog/post/post.component';
 import { ListEmAllGameComponent } from './list-em-all/list-em-all-game/list-em-all-game.component';
 import { BoardComponent } from './minesweeper-world/board/board.component';
+import { SnakeGameComponent } from './snake/snake-game/snake-game.component';
 import { IsBlogOwnerGuard } from './util/guard/is-blog-owner.guard';
 
 const routes: Routes = [
@@ -35,6 +36,10 @@ const routes: Routes = [
   {
     path: 'list-em-all',
     component: ListEmAllGameComponent
+  },
+  {
+    path: 'snake',
+    component: SnakeGameComponent
   },
   {
     path: '',

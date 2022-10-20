@@ -1,0 +1,6 @@
+<div id="board">
+    <div *ngFor="let row of board;" class="row">
+        <div *ngFor="let tile of row" [class]="{'tile': true, 'snake': tile.isSnake, 'food': tile.isFood}">
+        </div>
+    </div>
+</div>

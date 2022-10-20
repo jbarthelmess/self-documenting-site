@@ -11,7 +11,7 @@
         </p>
         <h3>
             Below are the blog entries listed in reverse chronological order. Click one 
-            below read and learn about the progress! To the right are other projects that 
+            below to read and learn about the progress! To the right are other projects that 
             are held inside of this one.
         </h3>
         <app-post-preview *ngFor="let post of postPreviews;" [postPreview]="post" (postId)="navigateOnClick($event)"></app-post-preview>
