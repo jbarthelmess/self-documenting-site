@@ -1,17 +1,24 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Tile } from '../model/tile.model';
+
+import * as dialogPolyfill from 'dialog-polyfill';
 
 @Component({
   selector: 'app-snake-game',
   templateUrl: './snake-game.component.html',
   styleUrls: ['./snake-game.component.scss']
 })
-export class SnakeGameComponent implements OnInit, OnDestroy {
+export class SnakeGameComponent implements OnInit, OnDestroy, AfterViewInit {
   board: Tile[][] = [];
   interval: any = null;
   snake: Tile[] = [];
   direction: number = 1;
   directionChangePipe: number[] = [];
+  energy: number = 27;
+
+  @ViewChild('instructions') instructionDialog!: ElementRef;
+  @ViewChild('result') resultDialog!: ElementRef;
+  resultText: string = '';
 
   constructor() { }
 
@@ -39,47 +46,65 @@ export class SnakeGameComponent implements OnInit, OnDestroy {
 
     tile = this.board[5][5];
     tile.isSnake = true;
+    tile.isHead = true;
     this.snake.push(tile);
 
     this.generateFood();
+  }
 
+  ngAfterViewInit() {
+    dialogPolyfill.default.registerDialog(this.instructionDialog.nativeElement);
+    dialogPolyfill.default.registerDialog(this.resultDialog.nativeElement);
+    this.instructionDialog.nativeElement.showModal();
+  }
+
+  startGame() {
+    this.instructionDialog.nativeElement.close();
     this.interval = setInterval(() => {
-      const headId = this.snake[this.snake.length-1].id;
-      let isChanged = false;
-      while(!isChanged && this.directionChangePipe.length > 0) {
-        const newDir = this.directionChangePipe.shift();
-        if (newDir !== undefined && newDir !== this.direction && newDir !== -this.direction) {
-          isChanged = true;
-          this.direction = newDir;
-        }
-      }
-      // remove the tail first
-      const removeTile = this.snake.shift();
-      if(removeTile) {
-        removeTile.isSnake = false;
-      }
-
-      // get the new head
-      const newHead = headId + this.direction;
-      if(newHead > 99 || newHead < 0 || (newHead % 10) - (headId % 10) !== (this.direction % 10)) {
+      this.energy -= 1;
+      if (this.energy <= 0) {
         this.lose();
       } else {
-        const row = Math.floor(newHead / 10);
-        const col = newHead % 10;
-        const headTile = this.board[row][col];
-        // check if the new head is part of the snake
-        if(this.snake.includes(headTile)) {
+        const headId = this.snake[this.snake.length-1].id;
+        this.snake[this.snake.length - 1].isHead = false;
+        let isChanged = false;
+        while(!isChanged && this.directionChangePipe.length > 0) {
+          const newDir = this.directionChangePipe.shift();
+          if (newDir !== undefined && newDir !== this.direction && newDir !== -this.direction) {
+            isChanged = true;
+            this.direction = newDir;
+          }
+        }
+        // remove the tail first
+        const removeTile = this.snake.shift();
+        if(removeTile) {
+          removeTile.isSnake = false;
+        }
+
+        // get the new head
+        const newHead = headId + this.direction;
+        if(newHead > 99 || newHead < 0 || (newHead % 10) - (headId % 10) !== (this.direction % 10)) {
           this.lose();
         } else {
-          headTile.isSnake = true;
-          if (headTile.isFood) {
-            headTile.isFood = false;
-            this.generateFood();
-            if (removeTile) {
-              this.snake.unshift(removeTile);
+          const row = Math.floor(newHead / 10);
+          const col = newHead % 10;
+          const headTile = this.board[row][col];
+          // check if the new head is part of the snake
+          if(this.snake.includes(headTile)) {
+            this.lose();
+          } else {
+            headTile.isSnake = true;
+            headTile.isHead = true;
+            if (headTile.isFood) {
+              headTile.isFood = false;
+              this.generateFood();
+              if (removeTile) {
+                removeTile.isSnake = true;
+                this.snake.unshift(removeTile);
+              }
             }
+            this.snake.push(headTile);
           }
-          this.snake.push(headTile);
         }
       }
     }, 300);
@@ -104,7 +129,8 @@ export class SnakeGameComponent implements OnInit, OnDestroy {
   }
 
   generateFood() {
-    if(this.snake.length === 99) {
+    this.energy += 13;
+    if(this.snake.length >= 99) {
       this.win();
     } else {
       let generated = false;
@@ -123,15 +149,21 @@ export class SnakeGameComponent implements OnInit, OnDestroy {
   win() {
     if(this.interval !== null) {
       clearInterval(this.interval);
-      alert("You win!");
     }
+    this.resultText = 'You Win!';
+    this.resultDialog.nativeElement.showModal();
   }
 
   lose() {
     if(this.interval !== null) {
       clearInterval(this.interval);
     }
-    alert("You lose!");
+    this.resultText = 'You Lose!';
+    this.resultDialog.nativeElement.showModal();
+  }
+
+  closeModal() {
+    this.resultDialog.nativeElement.close();
   }
 
   ngOnDestroy(): void {

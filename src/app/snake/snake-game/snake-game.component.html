@@ -1,6 +1,25 @@
+<div class="info-bar">
+    <span class="length-display"><strong>Length: {{snake.length}}</strong></span>
+    <span class="length-display"><strong>Energy: {{energy}}</strong></span>
+    <a [routerLink]="['/home']">Back to HomePage</a>
+</div>
 <div id="board">
     <div *ngFor="let row of board;" class="row">
-        <div *ngFor="let tile of row" [class]="{'tile': true, 'snake': tile.isSnake, 'food': tile.isFood}">
+        <div *ngFor="let tile of row" [class]="{'tile': true, 'snake': tile.isSnake && !tile.isHead, 'food': tile.isFood, 'head': tile.isHead}">
         </div>
     </div>
 </div>
+
+<dialog #instructions class="modal">
+	<h2>How to Play</h2>
+	<p>This is a version of Snake with an energy limit. The snake must get to the next piece of 
+        food before his energy runs out. When the snake gets the food he will be rewarded with 
+        more energy. The object of the game is to fill the board with the snake. 
+	</p>
+	<button (click)="startGame()">Close</button>
+</dialog>
+<dialog #result class="modal">
+	<span class="result-text"><b>{{resultText}}</b></span>
+    <br>
+	<button (click)="closeModal()">Close</button>
+</dialog>
